@@ -50,6 +50,10 @@ mongoose
     { useNewUrlParser: true }
   )
   .then(result => {
-    app.listen(8080, () => console.log('Server running on http://localhost:8080'));
+    const server = app.listen(8080, () => console.log('Server running on http://localhost:8080'));
+    const io = require('socket.io')(server);
+    io.on('connection', socket => {
+      console.log('Client Connected');
+    });
   })
   .catch(err => console.log(err));
