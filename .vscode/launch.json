@@ -7,8 +7,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/app.js",
+      "name": "Launch Server",
+      "program": "${workspaceFolder}/server/app.js",
       "restart": true,
       "runtimeExecutable": "nodemon",
       "console": "integratedTerminal"
