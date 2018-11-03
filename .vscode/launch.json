@@ -11,6 +11,7 @@
       "program": "${workspaceFolder}/server/app.js",
       "restart": true,
       "runtimeExecutable": "nodemon",
+      "cwd": "${workspaceFolder}/server",
       "console": "integratedTerminal"
     }
   ]
