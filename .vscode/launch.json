@@ -8,10 +8,10 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Server",
-      "program": "${workspaceFolder}/server/app.js",
+      "program": "${workspaceFolder}/server-graphql/app.js",
       "restart": true,
       "runtimeExecutable": "nodemon",
-      "cwd": "${workspaceFolder}/server",
+      "cwd": "${workspaceFolder}/server-graphql",
       "console": "integratedTerminal"
     }
   ]

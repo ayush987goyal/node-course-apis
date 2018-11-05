@@ -182,7 +182,7 @@ class Feed extends Component {
           `
         };
 
-        fetch('http://localhost:8080/graphql', {
+        return fetch('http://localhost:8080/graphql', {
           method: 'POST',
           body: JSON.stringify(graphqlQuery),
           headers: {
