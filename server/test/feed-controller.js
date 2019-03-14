@@ -3,9 +3,10 @@ const sinon = require('sinon');
 const mongoose = require('mongoose');
 
 const User = require('../models/user');
-const AuthController = require('../controllers/auth');
+const Post = require('../models/post');
+const FeedController = require('../controllers/feed');
 
-describe('Auth Controller', () => {
+describe('Feed Controller', () => {
   before(done => {
     mongoose
       .connect(process.env.MONGODB_TEST_URI, { useNewUrlParser: true })
@@ -26,31 +27,20 @@ describe('Auth Controller', () => {
   beforeEach(() => {});
   afterEach(() => {});
 
-  it('should throw an error with code 500 if acessing database fails while LOGIN', done => {
-    sinon.stub(User, 'findOne');
-    User.findOne.throws();
-
+  it('should add a created post to the posts of the creator', done => {
     const req = {
+      userId: '5c0f66b979af55031b34728a',
       body: {
-        email: 'test@test.com',
-        password: 'test123'
+        title: 'Test post',
+        content: 'A test post'
+      },
+      file: {
+        path: 'abc'
       }
     };
-
-    AuthController.login(req, {}, () => {}).then(result => {
-      expect(result).to.be.an('error');
-      expect(result).to.have.property('statusCode', 500);
-      done();
-    });
-
-    User.findOne.restore();
-  });
-
-  it('should send a response with valid user status for an existing user', done => {
-    const req = { userId: '5c0f66b979af55031b34728a' };
     const res = {
       statusCode: 500,
-      userStatus: null,
+      data: null,
       status(code) {
         this.statusCode = code;
         return this;
@@ -60,12 +50,16 @@ describe('Auth Controller', () => {
       }
     };
 
-    AuthController.getStatus(req, res, () => {}).then(() => {
-      expect(res.statusCode).to.be.equal(200);
-      expect(res.userStatus).to.be.equal('I am new!');
+    FeedController.createPost(req, res, () => {})
+      .then(() => {
+        return User.findById('5c0f66b979af55031b34728a');
+      })
+      .then(savedUser => {
+        expect(savedUser).to.have.property('posts');
+        expect(savedUser.posts).to.have.length(1);
 
-      done();
-    });
+        done();
+      });
   });
 
   after(done => {
